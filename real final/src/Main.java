@@ -23,31 +23,27 @@ public class Main {
 
     public static void main(String[] args) {
         // Create a JFrame (the main window)
-        Scanner scan = new Scanner(System.in);
-        //custom night
-        System.out.println("Pick difficulty of rock (BTW anything above 20 does nothing)");
-        int brock=scan.nextInt();
-        System.out.println("Pick difficulty of guy (BTW anything above 20 does nothing)");
-        int nuy=scan.nextInt();
-        System.out.println("Pick difficulty of joe (BTW anything above 20 does nothing)");
-        int jo=scan.nextInt();
-        if(jo>20){
-        System.out.println("Pick difficulty of joe (You can't go up higher than 20)");
-         jo=scan.nextInt();
-       }
+
+        gameplay();
 
 
+
+    }
+
+
+    public static void gameplay()
+    {
         blank=35;
         tim=0;
-        flips=100;
+        flips=150;
         joe=200;
-        joeagro=jo;
+        joeagro=0;
         randomthingidk=1;
         cams();
         rockman=1;
-        rockagro=brock;
+        rockagro=0;
         guy=1;
-        guyagro=nuy;
+        guyagro=0;
 
 
         JFrame window= new JFrame("Room");
@@ -116,19 +112,24 @@ public class Main {
             public void actionPerformed(ActionEvent e) {
                 // This code runs when the button is clicked
                 if(blank>=1) {
-                    JOptionPane.showMessageDialog(window, "bang");
+                    JOptionPane optionPane = new JOptionPane("BANG!", JOptionPane.INFORMATION_MESSAGE);
+                    JDialog dialog = optionPane.createDialog("YOU shot me");
+                    dialog.setVisible(true);
+
+
+
                     blank -= 1;
                     ammo.setText("Blanks" + blank+" ");
                     rockman=1;
                     int myRandomNumber = random.nextInt(1,21);
                     if (guyagro>=myRandomNumber){
-                        guy+=3;
+                        guy+=4;
                     }
                 }
                 else
-                    {
-                        JOptionPane.showMessageDialog(window, "oh no");
-                    }
+                {
+                    JOptionPane.showMessageDialog(window, "oh no");
+                }
 
             }
 
@@ -143,7 +144,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(camera==1) {
-                    joe += 5;
+                    joe += 4;
                 }
             }
 
@@ -156,7 +157,7 @@ public class Main {
                 joe-=joeagro;
             }
         };
-        josh.scheduleAtFixedRate(clicky, 0, 5000);
+        josh.scheduleAtFixedRate(clicky, 0, 4000);
 
         //updating
         Timer eepy = new Timer();
@@ -167,27 +168,27 @@ public class Main {
                 if (rockman==8) {
                     if(randomthingidk==1) {
                         window.setVisible(false);
-                        lose();
+
                     }
                 }
                 if (guy>=8) {
                     if(randomthingidk==1) {
                         window.setVisible(false);
-                        lose();
+
                     }
                 }
                 if(joe<=0)
                 {
                     if(randomthingidk==1) {
                         window.setVisible(false);
-                        lose();
+
                     }
                 }
                 if(tim>=7)
                 {
                     if(randomthingidk==1) {
                         window.setVisible(false);
-                        randomthingidk-=1;
+
                     }
                 }
             }
@@ -212,7 +213,6 @@ public class Main {
 
         // Make the frame visible
         window.setVisible(true);
-
 
 
 
@@ -505,12 +505,14 @@ public class Main {
                     if(randomthingidk==1) {
                         cam.setVisible(false);
                         lose();
+
                     }
                 }
                 if (guy>=8) {
                     if(randomthingidk==1) {
                         cam.setVisible(false);
                         lose();
+
                     }
                 }
                 if (tim>=7) {
@@ -518,6 +520,7 @@ public class Main {
                     if(randomthingidk==1) {
                         cam.setVisible(false);
                         win();
+
                     }
                 }
                 if (flips<=0){
@@ -535,6 +538,7 @@ public class Main {
                     if(randomthingidk==1) {
                         cam.setVisible(false);
                         lose();
+
                     }
                 }
             }
@@ -596,17 +600,59 @@ public class Main {
         cam.getContentPane().setBackground(Color.WHITE);
         cam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         cam.setLayout(new BorderLayout());
-        cam.setLocation(0, 0);
-        cam.setSize(1500, 1000);
+        cam.setLocation(0, -50);
+        cam.setSize(1500, 900);
 
         JLabel yay = new JLabel("You lose");
         yay.setHorizontalAlignment(SwingConstants.CENTER);
         yay.setVerticalAlignment(SwingConstants.CENTER);
 
+        String tips=("nice");
+        if(rockman==8){
+            tips=("Shoot beats rock. You have a gun.");
+        }
+        if(guy>=8){
+            tips=("Guy like loud noises. He hates looking at you.");
+        }
+        if(joe<=0){
+            tips=("Joe see all besides clicks. Go to cam one so he can see you click");
+        }
+        JLabel help = new JLabel(tips);
+        help.setHorizontalAlignment(SwingConstants.CENTER);
+        help.setVerticalAlignment(SwingConstants.CENTER);
+
+        JButton button = new JButton("Run it back");
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+        // Add an ActionListener to handle the button click event
+        button.addActionListener(new ActionListener() {
+                                     @Override
+                                     public void actionPerformed(ActionEvent e) {
+                                         // This code runs when the button is clicked
+                                         blank=35;
+                                         tim=0;
+                                         flips=150;
+                                         joe=200;
+                                         randomthingidk=1;
+                                         rockman=1;
+                                         guy=1;
+
+                                             gameplay();
+                                        cam.setVisible(false);
+
+                                     }
+                                 });
+
         cam.add(yay);
+        cam.add(help,BorderLayout.WEST);
+        cam.add(button,BorderLayout.SOUTH);
         cam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         // Make the frame visible
         cam.setVisible(true);
+
+
     }
 }
+
