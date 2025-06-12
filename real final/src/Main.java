@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -20,7 +21,7 @@ public class Main {
     public static int joe;
     public static int joeagro;
     public static int randomthingidk;
-
+    public static int theifagro;
     public static void main(String[] args) {
         // Create a JFrame (the main window)
 
@@ -33,9 +34,9 @@ public class Main {
 
     public static void gameplay()
     {
-        blank=35;
+        blank=7;
         tim=0;
-        flips=150;
+        flips=200;
         joe=200;
         joeagro=0;
         randomthingidk=1;
@@ -44,10 +45,13 @@ public class Main {
         rockagro=0;
         guy=1;
         guyagro=0;
+        theifagro=20;
+
+
 
 
         JFrame window= new JFrame("Room");
-        window.setMinimumSize(new Dimension(500, 700));
+        window.setMinimumSize(new Dimension(500, 750));
         window.setTitle("Room");
         window.getContentPane().setBackground(Color.WHITE);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,6 +106,8 @@ public class Main {
         fliping.setVerticalAlignment(SwingConstants.BOTTOM);
         pan.add(fliping, BorderLayout.SOUTH);
 
+
+
         //shoot
         JButton button = new JButton("SHOOT!");
         button.setHorizontalAlignment(SwingConstants.CENTER);
@@ -115,8 +121,6 @@ public class Main {
                     JOptionPane optionPane = new JOptionPane("BANG!", JOptionPane.INFORMATION_MESSAGE);
                     JDialog dialog = optionPane.createDialog("YOU shot me");
                     dialog.setVisible(true);
-
-
 
                     blank -= 1;
                     ammo.setText("Blanks" + blank+" ");
@@ -134,6 +138,32 @@ public class Main {
             }
 
         });
+
+        //reload
+        JButton reload = new JButton("SHOOT!");
+        reload.setHorizontalAlignment(SwingConstants.CENTER);
+        reload.setVerticalAlignment(SwingConstants.CENTER);
+        // Add an ActionListener to handle the button click event
+        reload.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // This code runs when the button is clicked
+                try {
+                    Thread.sleep(3000);
+                    if(flips>=20);{
+                        blank=7;
+                        flips-=20;
+                        ammo.setText("Blanks "+blank);
+                        fliping.setText("Flips "+flips);
+                    }
+
+                } catch (InterruptedException d) {
+                    System.out.println("got interrupted!");
+                }
+            }
+
+        });
+
 
         //joe ai
         JButton joey = new JButton("Click now");
@@ -158,6 +188,34 @@ public class Main {
             }
         };
         josh.scheduleAtFixedRate(clicky, 0, 4000);
+
+
+        //theif
+        Random dan = new Random();
+        Timer steal = new Timer();
+        TimerTask yonk = new TimerTask() {
+            @Override
+            public void run() {
+                // Code to be executed every 3 seconds
+                int myRandomNumber = dan.nextInt(1,21);
+                if (theifagro>=myRandomNumber){
+                    JOptionPane optionPane = new JOptionPane("You just got robbed", JOptionPane.INFORMATION_MESSAGE);
+                    JDialog dialog = optionPane.createDialog("LOL");
+                    dialog.setVisible(true);
+                    flips-=20;
+                    fliping.setText("Flips "+flips);
+                    try {
+                        Thread.sleep(15000);
+                        flips+=20;
+                        fliping.setText("Flips "+flips);
+
+                    } catch (InterruptedException d) {
+                        System.out.println("got interrupted!");
+                    }
+                }
+            }
+        };
+        steal.scheduleAtFixedRate(yonk, 0, 30000);
 
         //updating
         Timer eepy = new Timer();
@@ -202,7 +260,7 @@ public class Main {
         window.add(button, BorderLayout.WEST);
         window.add(pan, BorderLayout.EAST);
         window.add(joey, BorderLayout.SOUTH);
-
+        window.add(reload,BorderLayout.NORTH);
         // Set the window size
 
         window.setSize(300, 300);
@@ -221,7 +279,7 @@ public class Main {
         // Create a JFrame (the main window)
 
         JFrame cam = new JFrame("CAMS");
-        cam.setMinimumSize(new Dimension(780, 700));
+        cam.setMinimumSize(new Dimension(780, 750));
         cam.setTitle("cam");
         cam.getContentPane().setBackground(Color.WHITE);
         cam.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -233,12 +291,12 @@ public class Main {
         cram.setVerticalAlignment(SwingConstants.TOP);
 
         //location
-        ImageIcon rockpic = new ImageIcon("src/images.jpg");
+        ImageIcon rockpic = new ImageIcon("real final/src/images.jpg");
         JLabel nice = new JLabel(rockpic);
         nice.setHorizontalAlignment(SwingConstants.RIGHT);
         nice.setVerticalAlignment(SwingConstants.CENTER);
 
-        ImageIcon guypic = new ImageIcon("src/smiler.jpg");
+        ImageIcon guypic = new ImageIcon("real final/src/smiler.jpg");
         JLabel dude = new JLabel(guypic);
         dude.setHorizontalAlignment(SwingConstants.RIGHT);
         dude.setVerticalAlignment(SwingConstants.CENTER);
@@ -571,7 +629,7 @@ public class Main {
 
     public static void win() {
         // Create a JFrame (the main window)
-
+        randomthingidk-=1;
         JFrame cam = new JFrame("You win");
         cam.setMinimumSize(new Dimension(780, 700));
         cam.setTitle("You win");
@@ -629,13 +687,14 @@ public class Main {
                                      @Override
                                      public void actionPerformed(ActionEvent e) {
                                          // This code runs when the button is clicked
-                                         blank=35;
+                                         blank=7;
                                          tim=0;
-                                         flips=150;
+                                         flips=200;
                                          joe=200;
                                          randomthingidk=1;
                                          rockman=1;
                                          guy=1;
+
 
                                              gameplay();
                                         cam.setVisible(false);
@@ -655,4 +714,5 @@ public class Main {
 
     }
 }
+
 
